@@ -7,7 +7,6 @@ class Tree{
 public:
 	Tree(){	}
 
-	Node<T>* root;
 
 	void preorder(Node<T>* itr){
 		if (isEmpty(itr)) return;
@@ -54,6 +53,34 @@ public:
 		else if (t->right == NULL) return t;
 		else return findMax(t->right);
 	}
+	void insert(T x){ insert(x, root) }
+	void insert(T x, Node<T>* t){
+		if (t == NULL)
+			t = new Node<T>(x);
+		else if (x < t->n) insert(x, t->left);
+		else if (x > t->n) insert(x, t->right);
+		else throw std::out_of_range;
+	}
+	void remove(T x){
+		remove(x, root);
+	}
+	void remove(T x, Node<T>* t){
+		Node<T>* target = find(x, t);
+		
+		if (target == NULL) return NULL;
+		else if (target->left == NULL && target->right == NULL) delete target; // is leaf
+		else if (target->left != NULL && target->right != NULL){
+			target->n = findMin(target->right)->n;
+			remove(target->n, target->right);
+		}
+		else{
+			Node<T>* old = target;
+			target = (t->left != NULL) ? t->left : t->right;
+			delete old;
+		}
+	}
  
 	bool isEmpty(Node<T>* idx){ return !idx; }
+private:
+	Node<T>* root;
 };
