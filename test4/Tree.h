@@ -22,8 +22,38 @@ public:
 		std::cout << itr->n << " ";
 	}
 	void inorder(Node<T>* itr){
-		if (isEmpty(itr)) return;
-
+		if (isEmpty(itr->left) && isEmpty(itr->right)) // if leaf?
+			std::cout << itr->n << " ";
+		else{
+			inorder(itr->left);
+			inorder(itr->right);
+		}
 	}
+	Node<T>* find(T x){
+		return find(x, root);
+	}
+	Node<T>* find(T x, Node<T>* t){
+		if (t == NULL) return NULL;
+		else if (x < t->n) find(x, t->left);
+		else if (x > t->n) find(x, t->right);
+		else return t;
+	}
+	Node<T>* findMin(){
+		return findMin(root);
+	}
+	Node<T>* findMin(Node<T>* t){
+		if (t == NULL) return NULL;
+		else if (t->left == NULL) return t;
+		else return findMin(t->left);
+	}
+	Node<T>* findMax(){
+		return findMax(root);
+	}
+	Node<T>* findMax(Node<T>* t){
+		if (t == NULL) return NULL;
+		else if (t->right == NULL) return t;
+		else return findMax(t->right);
+	}
+ 
 	bool isEmpty(Node<T>* idx){ return !idx; }
 };
